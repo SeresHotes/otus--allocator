@@ -29,16 +29,16 @@ if (MSVC)
     target_compile_options(ExecutableTarget PRIVATE
         /W4 
     )
-    target_compile_options(ExecutableTarget PRIVATE
+    target_compile_options(TestTarget PRIVATE
         /W4 
     )
 else ()
     target_compile_options(ExecutableTarget PRIVATE
-        -Wall -Wextra -pedantic -Werror
+        -Wall -Wextra -pedantic -Werror -pedantic-errors -Wextra-semi
     )
-    target_compile_options(ExecutableTarget PRIVATE
-        -Wall -Wextra -pedantic -Werror
-    )
+    target_compile_options(TestTarget PRIVATE
+        -Wall -Wextra -pedantic -Werror -pedantic-errors -Wextra-semi
+    ) 
 endif()
 
 ################################################################

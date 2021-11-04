@@ -23,7 +23,7 @@ public:
             throw std::bad_alloc();
         }
         bucket = reinterpret_cast<T*>(p);
-    };
+    }
     ~BucketAllocator() = default;
 
     template<typename U>
@@ -40,7 +40,7 @@ public:
         
         T* ret = &bucket[index];
         index += n;
-        return ret;
+        return ret; 
     }
 
     void deallocate(T*, std::size_t) {
@@ -49,7 +49,7 @@ public:
     template<typename U, typename ...Args>
     void construct(U *p, Args &&...args) {
         new(p) U(std::forward<Args>(args)...);
-    };
+    }
 
     void destroy(T *p) {
         p->~T();
