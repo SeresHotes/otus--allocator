@@ -34,3 +34,7 @@
 # Directories
 build/
 .vscode/
+.vs/
+
+# Other
+CMakeSettings.json
