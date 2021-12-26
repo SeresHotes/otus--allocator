@@ -17,14 +17,14 @@ public:
         using other = BucketAllocator<U, BucketSize>;
     };
 
-    BucketAllocator() : index(0) {
-        void* p = malloc(BucketSize * sizeof(T));
-        if (!p) {
-            throw std::bad_alloc();
-        }
-        bucket = reinterpret_cast<T*>(p);
+    BucketAllocator() {
     }
-    ~BucketAllocator() = default;
+    ~BucketAllocator() {
+        if (bucket != nullptr) {
+            free(bucket);
+            bucket = nullptr;
+        }
+    }
 
     template<typename U>
     BucketAllocator(const BucketAllocator<U, BucketSize>&) {
@@ -32,6 +32,15 @@ public:
     }
 
     T* allocate(std::size_t n, const void * hint = 0) {
+        if (bucket == nullptr) {
+            void* p = malloc(BucketSize * sizeof(T));
+            if (!p) {
+                throw std::bad_alloc();
+            }
+            bucket = reinterpret_cast<T*>(p);
+        }
+
+
         (void)hint;
 
         if (index + n > BucketSize) {
@@ -55,7 +64,7 @@ public:
         p->~T();
     }
 private:
-    T* bucket;
-    size_t index;
+    T* bucket = nullptr;
+    size_t index = 0;
 };
 
